@@ -22,12 +22,10 @@ private:
 	ASpherePlayer* GetSpherePlayerPawn();
 
 	// ----Input binded function----// 
-	void RollClockWise(float value);
-
+	void RollRight(float value);
+	void RollForward(float value);
 	void Jump();
-
 	void Attract(float value);
-
 	void Repulse(float value);
 	// ----------------------------//
 

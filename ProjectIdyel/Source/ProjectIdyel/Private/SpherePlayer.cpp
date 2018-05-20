@@ -2,6 +2,7 @@
 
 #include "SpherePlayer.h"
 #include "Components/StaticMeshComponent.h"
+#include "Math/UnrealMathUtility.h"
 
 
 // Sets default values
@@ -20,12 +21,19 @@ void ASpherePlayer::SetBodySphereMeshComp(UStaticMeshComponent * BodySphereComp)
 void ASpherePlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-void ASpherePlayer::RollClockWise(float intensity)
+void ASpherePlayer::RollRight( float intensity )
 {
-	PlayerBody->AddTorqueInRadians(FVector(0, 1000000 * intensity, 0),"None", false);
+	FVector rightForce = FVector(0, MoveSpeed * intensity, 0 );
+	PlayerBody->AddForce(rightForce, "None", false);
+	// TODO add an opposite force to avoid the perpetual mouvement when no torque applied
+}
+
+void ASpherePlayer::RollForward( float intensity )
+{
+	FVector forwardForce = FVector(MoveSpeed * intensity, 0, 0);
+	PlayerBody->AddForce(forwardForce, "None", false);
 	// TODO add an opposite force to avoid the perpetual mouvement when no torque applied
 }
 
@@ -33,14 +41,8 @@ void ASpherePlayer::RollClockWise(float intensity)
 void ASpherePlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
-// Called to bind functionality to input
-/*void ASpherePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}*/
 
 
 

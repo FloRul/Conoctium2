@@ -22,7 +22,11 @@ public:
 
 	// Allow the player to move
 	UFUNCTION(BlueprintCallable, Category = Movement)
-	void RollClockWise(float intensity);
+	void RollRight(float intensity);
+
+	// Allow the player to move
+	UFUNCTION(BlueprintCallable, Category = Movement)
+	void RollForward(float intensity);
 
 public:
 	// Called every frame
@@ -35,6 +39,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = Movement)
+    float MoveSpeed = 10000000;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float Deceleration = 500000;
 
 protected :
 	UPROPERTY(BlueprintReadOnly)

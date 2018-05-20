@@ -7,21 +7,31 @@
 void ASpherePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	InputComponent->BindAxis("RollClockWise", this, &ASpherePlayerController::RollClockWise);
+	InputComponent->BindAxis("RollRight", this, &ASpherePlayerController::RollRight);
+	InputComponent->BindAxis("RollForward", this, &ASpherePlayerController::RollForward);
 	InputComponent->BindAxis("Attract", this, &ASpherePlayerController::Attract);
 	InputComponent->BindAxis("Repulse", this, &ASpherePlayerController::Repulse);
 
 	InputComponent->BindAction("Jump",IE_Pressed ,this, &ASpherePlayerController::Jump);
 }
 
-void ASpherePlayerController::RollClockWise(float value)
+void ASpherePlayerController::RollRight(float value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s : Rolling with a value of %f"), *GetPawn()->GetName(), value)
-	// TODO Delegate the rolling method to the pawn
+	//UE_LOG(LogTemp, Warning, TEXT("%s : Rolling with a value of %f"), *GetPawn()->GetName(), value)
 	ASpherePlayer* SpherePlayer = GetSpherePlayerPawn();
 	if (SpherePlayer)
 	{
-		SpherePlayer->RollClockWise(value);
+		SpherePlayer->RollRight(value);
+	}
+}
+
+void ASpherePlayerController::RollForward(float value)
+{
+	ASpherePlayer* SpherePlayer = GetSpherePlayerPawn();
+	if (SpherePlayer)
+	{
+		// TODO delegate the right method to the pawn
+		SpherePlayer->RollForward(value);
 	}
 }
 
@@ -34,13 +44,13 @@ void ASpherePlayerController::Jump()
 
 void ASpherePlayerController::Attract(float value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s : Attract with a value of %f"), *GetPawn()->GetName(), value)
+	//UE_LOG(LogTemp, Warning, TEXT("%s : Attract with a value of %f"), *GetPawn()->GetName(), value)
 	// TODO Delegate the attract method to the pawn
 
 }
 void ASpherePlayerController::Repulse(float value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s : Repulse with a value of %f"), *GetPawn()->GetName(), value)
+	//UE_LOG(LogTemp, Warning, TEXT("%s : Repulse with a value of %f"), *GetPawn()->GetName(), value)
 	// TODO Delegate the repulse method to the pawn
 
 }
