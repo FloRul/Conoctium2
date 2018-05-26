@@ -42,12 +42,52 @@ void ASpherePlayer::RollForward( float intensity )
 
 void ASpherePlayer::Jump()
 {
-	PlayerBody->AddImpulse(FVector(0, 0, JumpSpeed));
+	if (IsGrounded()) { PlayerBody->AddImpulse(FVector(0, 0, JumpSpeed)); }
+}
+
+void ASpherePlayer::Attract(ASpherePlayer * otherP, float intensity)
+{
+	// Get other player location
+	FVector otherPLocation = otherP->GetActorLocation();
+
+	// Get the unit vector pointing to other player
+	auto otherPDirection = otherPLocation - GetActorLocation();
+	auto dist2otherP = otherPDirection.Size();
+	auto attractDirection = otherPDirection;
+	attractDirection.Normalize();
+
+	// define the attraction coefficient 
+	// proportional to the distance to the other player and the intensity
+	auto attractCoeff = 1 / dist2otherP;
+
+	// Apply force along with the direction of this vector
+	auto attractForce = attractDirection * attractCoeff * 10E6 * intensity;
+	PlayerBody->AddForce(attractForce, "None", true);
+}
+
+void ASpherePlayer::Repulse(ASpherePlayer * otherP, float intensity)
+{
+	// Get other player location
+	FVector otherPLocation = otherP->GetActorLocation();
+
+	// Get the unit vector pointing to other player
+	auto otherPDirection = otherPLocation - GetActorLocation();
+	auto dist2otherP = otherPDirection.Size();
+	auto attractDirection = otherPDirection;
+	attractDirection.Normalize();
+
+	// define the attraction coefficient 
+	// proportional to the distance to the other player and the intensity
+	auto attractCoeff = 1 / dist2otherP;
+
+	// Apply force along with the direction of this vector
+	auto attractForce =  -1 * attractDirection * attractCoeff * 10E6 * intensity;
+	PlayerBody->AddForce(attractForce, "None", true);
 }
 
 bool ASpherePlayer::IsGrounded()
 {
-	float RayLength = 60;
+	float RayLength = 80;
 	FVector StartLocation = GetActorLocation();
 	FVector EndLocation = StartLocation - FVector::UpVector * RayLength;
 	FCollisionQueryParams CollParams;

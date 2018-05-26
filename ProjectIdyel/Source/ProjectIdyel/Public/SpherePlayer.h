@@ -19,18 +19,20 @@ public:
 	void SetBodySphereMeshComp(UStaticMeshComponent * BodySphereComp);
 
 	// Allow the player to move
-	UFUNCTION(BlueprintCallable, Category = Movement)
 	void RollRight(float intensity);
 
 	// Allow the player to move
-	UFUNCTION(BlueprintCallable, Category = Movement)
 	void RollForward(float intensity);
 
-	UFUNCTION(BlueprintCallable, Category = Movement)
 	void Jump();
 
-	UFUNCTION(BlueprintCallable, Category = Movement)
+	void Attract(ASpherePlayer* otherP, float intensity);
+
+	void Repulse(ASpherePlayer * otherP, float intensity);
+
 	bool IsGrounded();
+
+
 
 public:
 	// Called every frame
@@ -45,10 +47,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = Movement)
-    float MoveSpeed = 10000000;
-	
-	UPROPERTY(EditDefaultsOnly)
-	float Deceleration = 500000;
+		float MoveSpeed = 1000000;
 
 	UPROPERTY(EditDefaultsOnly)
 	float JumpSpeed = 5000;

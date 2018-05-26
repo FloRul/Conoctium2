@@ -29,6 +29,11 @@ private:
 	void Repulse(float value);
 	// ----------------------------//
 
+	// Return a pointer to the other playerController 
+	// Used to find the location of the other player
+	ASpherePlayerController * GetOtherPlayerController();
+
+
 private:
 	ASpherePlayer * Player = nullptr;
 

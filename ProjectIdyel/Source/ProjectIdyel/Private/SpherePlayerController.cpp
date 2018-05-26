@@ -3,6 +3,8 @@
 #include "SpherePlayerController.h"
 #include "Components/InputComponent.h"
 #include "SpherePlayer.h"
+#include "Engine/World.h"
+#include "EngineUtils.h"
 
 void ASpherePlayerController::SetupInputComponent()
 {
@@ -33,12 +35,29 @@ void ASpherePlayerController::Jump()
 void ASpherePlayerController::Attract(float value)
 {
 	// TODO Delegate the attract method to the pawn
-
+	ASpherePlayer * otherP = GetOtherPlayerController() ? GetOtherPlayerController()->GetSpherePlayerPawn() : nullptr;
+	GetSpherePlayerPawn()->Attract(otherP, value);
 }
 void ASpherePlayerController::Repulse(float value)
 {
 	// TODO Delegate the repulse method to the pawn
+	ASpherePlayer * otherP = GetOtherPlayerController() ? GetOtherPlayerController()->GetSpherePlayerPawn() : nullptr;
+	GetSpherePlayerPawn()->Repulse(otherP, value);
+}
 
+ASpherePlayerController * ASpherePlayerController::GetOtherPlayerController()
+{
+	ASpherePlayerController * otherPController = nullptr;
+	// for all the player controller in game
+	for (TActorIterator<ASpherePlayerController>PControllerItr(GetWorld()); PControllerItr; ++PControllerItr)
+	{
+		// if the selected player controller id is different from OUR id
+		if (PControllerItr->GetInputIndex() != GetInputIndex())
+		{
+			otherPController = *PControllerItr;
+		}
+	}
+	return otherPController;
 }
 
 void ASpherePlayerController::BeginPlay()
@@ -48,7 +67,8 @@ void ASpherePlayerController::BeginPlay()
 
 ASpherePlayer* ASpherePlayerController::GetSpherePlayerPawn()
 {
-	if (!GetPawn()) {UE_LOG(LogTemp, Warning, TEXT("No pawn found for : %s"), *GetName())}
 	return (GetPawn()) ? Cast<ASpherePlayer>(GetPawn()) : nullptr;
 }
+
+
 
