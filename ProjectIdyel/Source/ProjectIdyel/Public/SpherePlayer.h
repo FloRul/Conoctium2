@@ -6,8 +6,6 @@
 #include "GameFramework/Pawn.h"
 #include "SpherePlayer.generated.h"
 
-class USphereComponent;
-
 UCLASS()
 class PROJECTIDYEL_API ASpherePlayer : public APawn
 {
@@ -28,6 +26,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Movement)
 	void RollForward(float intensity);
 
+	UFUNCTION(BlueprintCallable, Category = Movement)
+	void Jump();
+
+	UFUNCTION(BlueprintCallable, Category = Movement)
+	bool IsGrounded();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -46,11 +50,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float Deceleration = 500000;
 
+	UPROPERTY(EditDefaultsOnly)
+	float JumpSpeed = 5000;
+
 protected :
 	UPROPERTY(BlueprintReadOnly)
 	UStaticMeshComponent * PlayerBody = nullptr;
-
-
-	
 	
 };

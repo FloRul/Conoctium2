@@ -3,6 +3,9 @@
 #include "SpherePlayer.h"
 #include "Components/StaticMeshComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/EngineTypes.h"
+#include "Engine/World.h"
 
 
 // Sets default values
@@ -27,14 +30,37 @@ void ASpherePlayer::RollRight( float intensity )
 {
 	FVector rightForce = FVector(0, MoveSpeed * intensity, 0 );
 	PlayerBody->AddForce(rightForce, "None", false);
-	// TODO add an opposite force to avoid the perpetual mouvement when no torque applied
+	// Damping is managed in the editor
 }
 
 void ASpherePlayer::RollForward( float intensity )
 {
 	FVector forwardForce = FVector(MoveSpeed * intensity, 0, 0);
 	PlayerBody->AddForce(forwardForce, "None", false);
-	// TODO add an opposite force to avoid the perpetual mouvement when no torque applied
+	// Damping is managed in the editor
+}
+
+void ASpherePlayer::Jump()
+{
+	PlayerBody->AddImpulse(FVector(0, 0, JumpSpeed));
+}
+
+bool ASpherePlayer::IsGrounded()
+{
+	float RayLength = 60;
+	FVector StartLocation = GetActorLocation();
+	FVector EndLocation = StartLocation - FVector::UpVector * RayLength;
+	FCollisionQueryParams CollParams;
+	FCollisionResponseParams ResParams;
+	FHitResult Hit;
+
+	// Detect the Ground trace channel (custom channel 1)
+	return GetWorld()->LineTraceSingleByChannel(Hit,
+		StartLocation,
+		EndLocation,
+		ECollisionChannel::ECC_GameTraceChannel1,
+		CollParams,
+		ResParams);
 }
 
 // Called every frame

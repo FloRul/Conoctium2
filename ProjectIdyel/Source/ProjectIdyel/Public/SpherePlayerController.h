@@ -29,7 +29,11 @@ private:
 	void Repulse(float value);
 	// ----------------------------//
 
-	
+private:
+	ASpherePlayer * Player = nullptr;
+
+protected:
+	void BeginPlay() override;
 	
 	
 };

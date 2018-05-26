@@ -9,6 +9,11 @@ void AReferenceGameMode::BeginPlay()
 {
 	// second player cannot be spawn from the editor
 	UGameplayStatics::CreatePlayer(GetWorld(), 1, true);
+	// TODO Assign the controller to the player pawn
+	for (TActorIterator<ASpherePlayerStart> PlayerStartItr(GetWorld()); PlayerStartItr; ++PlayerStartItr)
+	{
+
+	}
 }
 
 AActor * AReferenceGameMode::ChoosePlayerStart_Implementation(AController * PlayerController)

@@ -17,55 +17,38 @@ void ASpherePlayerController::SetupInputComponent()
 
 void ASpherePlayerController::RollRight(float value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s : Rolling with a value of %f"), *GetPawn()->GetName(), value)
-	ASpherePlayer* SpherePlayer = GetSpherePlayerPawn();
-	if (SpherePlayer)
-	{
-		SpherePlayer->RollRight(value);
-	}
+	if (GetSpherePlayerPawn()){ GetSpherePlayerPawn()->RollRight(value); }
 }
 
 void ASpherePlayerController::RollForward(float value)
 {
-	ASpherePlayer* SpherePlayer = GetSpherePlayerPawn();
-	if (SpherePlayer)
-	{
-		// TODO delegate the right method to the pawn
-		SpherePlayer->RollForward(value);
-	}
+	if (GetSpherePlayerPawn()){ GetSpherePlayerPawn()->RollForward(value); }
 }
 
 void ASpherePlayerController::Jump()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s : Jump !"), *GetPawn()->GetName())
-	// TODO Delegate the jump method to the pawn
-
+	if (GetSpherePlayerPawn()) { GetSpherePlayerPawn()->Jump(); }
 }
 
 void ASpherePlayerController::Attract(float value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s : Attract with a value of %f"), *GetPawn()->GetName(), value)
 	// TODO Delegate the attract method to the pawn
 
 }
 void ASpherePlayerController::Repulse(float value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%s : Repulse with a value of %f"), *GetPawn()->GetName(), value)
 	// TODO Delegate the repulse method to the pawn
 
 }
 
+void ASpherePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 ASpherePlayer* ASpherePlayerController::GetSpherePlayerPawn()
 {
-	ASpherePlayer * SpherePlayerPawn = nullptr;
-	if (GetPawn())
-	{
-		SpherePlayerPawn = Cast<ASpherePlayer>(GetPawn());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No pawn for the controller : %s found"), *GetName())
-	}
-	return  SpherePlayerPawn;
+	if (!GetPawn()) {UE_LOG(LogTemp, Warning, TEXT("No pawn found for : %s"), *GetName())}
+	return (GetPawn()) ? Cast<ASpherePlayer>(GetPawn()) : nullptr;
 }
 
