@@ -26,6 +26,8 @@ public:
 
 	void Jump();
 
+	void ApplyForce(ASpherePlayer * otherP, float intensity);
+
 	void Attract(ASpherePlayer* otherP, float intensity);
 
 	void Repulse(ASpherePlayer * otherP, float intensity);
@@ -51,6 +53,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float JumpSpeed = 5000;
+
+	UPROPERTY(EditDefaultsOnly, Category = Movement)
+	float ForceMultiplier = 10E6;
 
 protected :
 	UPROPERTY(BlueprintReadOnly)

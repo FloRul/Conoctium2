@@ -13,37 +13,33 @@ void ASpherePlayerController::SetupInputComponent()
 	InputComponent->BindAxis("RollForward", this, &ASpherePlayerController::RollForward);
 	InputComponent->BindAxis("Attract", this, &ASpherePlayerController::Attract);
 	InputComponent->BindAxis("Repulse", this, &ASpherePlayerController::Repulse);
-
 	InputComponent->BindAction("Jump",IE_Pressed ,this, &ASpherePlayerController::Jump);
 }
 
-void ASpherePlayerController::RollRight(float value)
-{
-	if (GetSpherePlayerPawn()){ GetSpherePlayerPawn()->RollRight(value); }
-}
+// -------------- All of the following method are delegated to the pawn for the movement -------------- //
+// *****************************************************************************************************//
+void ASpherePlayerController::RollRight(float value) { if ( GetSpherePlayerPawn() ){ GetSpherePlayerPawn()->RollRight( value ); } }
 
-void ASpherePlayerController::RollForward(float value)
-{
-	if (GetSpherePlayerPawn()){ GetSpherePlayerPawn()->RollForward(value); }
-}
+// Delegated to the pawn
+void ASpherePlayerController::RollForward(float value){ if ( GetSpherePlayerPawn() ){ GetSpherePlayerPawn()->RollForward( value ); } }
 
-void ASpherePlayerController::Jump()
-{
-	if (GetSpherePlayerPawn()) { GetSpherePlayerPawn()->Jump(); }
-}
+// Delegated to the pawn
+void ASpherePlayerController::Jump() { if ( GetSpherePlayerPawn() ) { GetSpherePlayerPawn()->Jump(); } }
 
 void ASpherePlayerController::Attract(float value)
 {
-	// TODO Delegate the attract method to the pawn
 	ASpherePlayer * otherP = GetOtherPlayerController() ? GetOtherPlayerController()->GetSpherePlayerPawn() : nullptr;
 	GetSpherePlayerPawn()->Attract(otherP, value);
 }
+
 void ASpherePlayerController::Repulse(float value)
 {
-	// TODO Delegate the repulse method to the pawn
 	ASpherePlayer * otherP = GetOtherPlayerController() ? GetOtherPlayerController()->GetSpherePlayerPawn() : nullptr;
 	GetSpherePlayerPawn()->Repulse(otherP, value);
 }
+// *****************************************************************************************************//
+// -----------------------------------------------------------------------------------------------------//
+
 
 ASpherePlayerController * ASpherePlayerController::GetOtherPlayerController()
 {
@@ -52,18 +48,12 @@ ASpherePlayerController * ASpherePlayerController::GetOtherPlayerController()
 	for (TActorIterator<ASpherePlayerController>PControllerItr(GetWorld()); PControllerItr; ++PControllerItr)
 	{
 		// if the selected player controller id is different from OUR id
-		if (PControllerItr->GetInputIndex() != GetInputIndex())
-		{
-			otherPController = *PControllerItr;
-		}
+		if (PControllerItr->GetInputIndex() != GetInputIndex()) { otherPController = *PControllerItr; }
 	}
 	return otherPController;
 }
 
-void ASpherePlayerController::BeginPlay()
-{
-	Super::BeginPlay();
-}
+void ASpherePlayerController::BeginPlay() { Super::BeginPlay(); }
 
 ASpherePlayer* ASpherePlayerController::GetSpherePlayerPawn()
 {

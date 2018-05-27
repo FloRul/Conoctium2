@@ -45,7 +45,8 @@ void ASpherePlayer::Jump()
 	if (IsGrounded()) { PlayerBody->AddImpulse(FVector(0, 0, JumpSpeed)); }
 }
 
-void ASpherePlayer::Attract(ASpherePlayer * otherP, float intensity)
+// coeff is the amount of axis input but with a sign to differ either the attraction or repulsion
+void ASpherePlayer::ApplyForce(ASpherePlayer * otherP, float coeff)
 {
 	// Get other player location
 	FVector otherPLocation = otherP->GetActorLocation();
@@ -61,28 +62,18 @@ void ASpherePlayer::Attract(ASpherePlayer * otherP, float intensity)
 	auto attractCoeff = 1 / dist2otherP;
 
 	// Apply force along with the direction of this vector
-	auto attractForce = attractDirection * attractCoeff * 10E6 * intensity;
-	PlayerBody->AddForce(attractForce, "None", true);
+	auto finalForce = attractDirection * attractCoeff * ForceMultiplier * coeff;
+	PlayerBody->AddForce(finalForce, "None", true);
 }
 
-void ASpherePlayer::Repulse(ASpherePlayer * otherP, float intensity)
+void ASpherePlayer::Attract(ASpherePlayer * otherP, float coeff)
 {
-	// Get other player location
-	FVector otherPLocation = otherP->GetActorLocation();
+	ApplyForce(otherP, coeff);
+}
 
-	// Get the unit vector pointing to other player
-	auto otherPDirection = otherPLocation - GetActorLocation();
-	auto dist2otherP = otherPDirection.Size();
-	auto attractDirection = otherPDirection;
-	attractDirection.Normalize();
-
-	// define the attraction coefficient 
-	// proportional to the distance to the other player and the intensity
-	auto attractCoeff = 1 / dist2otherP;
-
-	// Apply force along with the direction of this vector
-	auto attractForce =  -1 * attractDirection * attractCoeff * 10E6 * intensity;
-	PlayerBody->AddForce(attractForce, "None", true);
+void ASpherePlayer::Repulse(ASpherePlayer * otherP, float coeff)
+{
+	ApplyForce(otherP, -coeff);
 }
 
 bool ASpherePlayer::IsGrounded()
