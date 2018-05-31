@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SpherePlayerController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 
 // Sets default values
 ACameraFocus::ACameraFocus()
@@ -22,6 +24,11 @@ ACameraFocus::ACameraFocus()
 void ACameraFocus::BeginPlay()
 {
 	Super::BeginPlay();
+	auto P1 = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	auto P2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+
+	PController1 = P1 ? Cast<ASpherePlayerController>(P1) : nullptr;
+	PController2 = P2 ? Cast<ASpherePlayerController>(P2) : nullptr;
 }
 
 // Called every frame

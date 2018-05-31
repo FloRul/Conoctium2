@@ -29,10 +29,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	USpringArmComponent * ArmCamera;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 	ASpherePlayerController * PController1 = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 	ASpherePlayerController * PController2 = nullptr;
 
 public:	
